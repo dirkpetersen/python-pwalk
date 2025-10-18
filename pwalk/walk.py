@@ -60,6 +60,9 @@ def walk(
         yield from os.walk(top, topdown=topdown, onerror=onerror, followlinks=followlinks)
         return
 
-    # Use os.walk() for now - will integrate pwalk_core's walk functionality later
-    # The C extension currently focuses on report() generation
-    yield from os.walk(top, topdown=topdown, onerror=onerror, followlinks=followlinks)
+    # Use os.walk() with snapshot filtering
+    for dirpath, dirnames, filenames in os.walk(top, topdown=topdown, onerror=onerror, followlinks=followlinks):
+        # Filter .snapshot directories if requested
+        if ignore_snapshots and '.snapshot' in dirnames:
+            dirnames.remove('.snapshot')
+        yield dirpath, dirnames, filenames
