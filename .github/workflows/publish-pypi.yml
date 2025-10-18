@@ -25,7 +25,7 @@ jobs:
         CIBW_TEST_REQUIRES: pytest
         CIBW_TEST_COMMAND: "pytest {project}/tests/unit"
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: wheels
         path: ./wheelhouse/*.whl
@@ -40,7 +40,7 @@ jobs:
       id-token: write  # OIDC publishing
 
     steps:
-    - uses: actions/download-artifact@v3
+    - uses: actions/download-artifact@v4
       with:
         name: wheels
         path: dist/
