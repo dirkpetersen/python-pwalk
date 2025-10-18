@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pwalk"
+version = "0.1.0"
+description = "High-performance parallel filesystem walker"
+readme = "README.md"
+license = {text = "GPL-2.0"}
+authors = [{name = "Dirk Petersen", email = "dp@nowhere.com"}]
+requires-python = ">=3.10"
+keywords = ["filesystem", "walk", "parallel", "performance", "hpc", "hpc-tools", "storage-analysis"]
+
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Developers",
+    "Topic :: System :: Filesystems",
+    "Topic :: System :: Systems Administration",
+    "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: C",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+]
+
+dependencies = [
+    # No required dependencies - pure performance!
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "pytest-benchmark>=4.0.0",
+]
+
+[project.scripts]
+pwalk = "pwalk.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/dirkpetersen/python-pwalk"
+Repository = "https://github.com/dirkpetersen/python-pwalk"
+Issues = "https://github.com/dirkpetersen/python-pwalk/issues"
+Changelog = "https://github.com/dirkpetersen/python-pwalk/releases"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --cov=pwalk --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["pwalk"]
+omit = ["tests/*", "setup.py"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+]
