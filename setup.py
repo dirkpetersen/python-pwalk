@@ -82,7 +82,6 @@ setup(
         'Programming Language :: Python :: 3.14',
         'Programming Language :: C',
         'Operating System :: POSIX :: Linux',
-        'Operating System :: MacOS',
     ],
     keywords='filesystem walk parallel performance hpc hpc-tools storage-analysis',
     project_urls={
