@@ -7,9 +7,9 @@
 [![Build Status](https://github.com/dirkpetersen/python-pwalk/workflows/Test/badge.svg)](https://github.com/dirkpetersen/python-pwalk/actions)
 [![codecov](https://codecov.io/gh/dirkpetersen/python-pwalk/branch/main/graph/badge.svg)](https://codecov.io/gh/dirkpetersen/python-pwalk)
 
-**A blazing-fast, parallel replacement for Python's `os.walk()` — optimized for petabyte-scale filesystems and HPC environments.**
+**A high-performance toolkit for filesystem analysis and reporting — optimized for petabyte-scale filesystems and HPC environments.**
 
-Traverse massive directory trees **5-10x faster** than standard `os.walk()` with true multi-threading, intelligent buffering, and automatic zstd compression. Perfect for system administrators, data scientists, and HPC users working with millions or billions of files.
+Generate comprehensive filesystem metadata reports **5-10x faster** than traditional tools, with true multi-threading, intelligent buffering, and automatic zstd compression achieving 23x size reduction. Perfect for system administrators, data scientists, and HPC users working with millions or billions of files.
 
 ## Why python-pwalk?
 

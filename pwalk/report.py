@@ -67,7 +67,11 @@ def report(
         output = output + '.zst'
 
     if not HAS_CORE:
-        raise ImportError("C extension not available. Build with: python setup.py build_ext --inplace")
+        raise ImportError(
+            "C extension (_pwalk_core) not available.\n"
+            "Install from PyPI with: pip install pwalk\n"
+            "Or if building from source: python setup.py build_ext --inplace"
+        )
 
     try:
         result = _pwalk_core.write_csv(
