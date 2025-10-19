@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pwalk"
-version = "0.1.4"
+version = "0.1.5"
 description = "High-performance parallel filesystem walker"
 readme = "README.md"
 license = {text = "GPL-2.0"}
