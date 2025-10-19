@@ -17,7 +17,7 @@ jobs:
         submodules: recursive
 
     - name: Build regular wheels
-      uses: pypa/cibuildwheel@v2.16.2
+      uses: pypa/cibuildwheel@v2.22
       env:
         CIBW_BUILD: cp310-* cp311-* cp312-* cp313-* cp314-*
         CIBW_SKIP: "*-musllinux_* *-win32"
@@ -32,7 +32,7 @@ jobs:
         CIBW_TEST_COMMAND: "pytest {project}/tests/unit"
 
     - name: Build PyPy wheels
-      uses: pypa/cibuildwheel@v2.16.2
+      uses: pypa/cibuildwheel@v2.22
       env:
         CIBW_BUILD: pp310-* pp311-*
         CIBW_SKIP: "*-musllinux_* *-win32"
