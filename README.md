@@ -1,11 +1,10 @@
 # python-pwalk
 
-[![PyPI version](https://img.shields.io/pypi/v/pwalk.svg)](https://pypi.org/project/pwalk/)
-[![Python versions](https://img.shields.io/pypi/pyversions/pwalk.svg)](https://pypi.org/project/pwalk/)
-[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://github.com/dirkpetersen/python-pwalk/blob/main/LICENSE)
-[![Downloads](https://static.pepy.tech/badge/pwalk)](https://pepy.tech/project/pwalk)
+[![PyPI](https://img.shields.io/pypi/v/pwalk.svg)](https://pypi.org/project/pwalk/)
+[![Downloads](https://img.shields.io/pypi/dm/pwalk.svg)](https://pypi.org/project/pwalk/)
+[![License](https://img.shields.io/github/license/dirkpetersen/python-pwalk)](https://raw.githubusercontent.com/dirkpetersen/python-pwalk/main/LICENSE)
+[![Python Version](https://img.shields.io/pypi/pyversions/pwalk.svg)](https://pypi.org/project/pwalk/)
 [![Build Status](https://github.com/dirkpetersen/python-pwalk/workflows/Test/badge.svg)](https://github.com/dirkpetersen/python-pwalk/actions)
-[![codecov](https://codecov.io/gh/dirkpetersen/python-pwalk/graph/badge.svg?token=YOUR_CODECOV_TOKEN)](https://codecov.io/gh/dirkpetersen/python-pwalk)
 
 **A high-performance toolkit for filesystem analysis and reporting — optimized for petabyte-scale filesystems and HPC environments.**
 
