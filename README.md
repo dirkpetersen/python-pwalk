@@ -272,14 +272,73 @@ schedule.every().sunday.at("02:00").do(weekly_snapshot)
 - Python 3.10-3.12: Same behavior as today (uses `os.walk()`)
 - `report()` is always fast: Already uses multi-threaded C code (not affected by GIL)
 
-**How to Enable Free-Threading** (Python 3.13+):
+**How to Get Free-Threading Python** (Python 3.13+):
+
+Free-threading Python builds are now available! Here's how to get them:
+
+**Option 1: Official Python.org Installers** (Easiest)
 ```bash
-# Install Python with free-threading support
+# Download from python.org
+# Look for "Free-threaded" builds (separate downloads)
+# https://www.python.org/downloads/
+
+# On Linux/macOS, the free-threaded interpreter has a 't' suffix
+python3.13t --version  # Should show "Python 3.13.x (free-threaded)"
+```
+
+**Option 2: Build from Source** (Linux/macOS)
+```bash
+# Clone Python source
+git clone https://github.com/python/cpython.git
+cd cpython
+git checkout v3.13.0  # or latest 3.13.x tag
+
+# Configure with free-threading
+./configure --disable-gil
+make -j$(nproc)
+sudo make install
+
+# Verify
+python3.13 --version
+python3.13 -c "import sys; print(f'GIL disabled: {not sys._is_gil_enabled()}')"
+```
+
+**Option 3: Docker/Conda** (Recommended for Testing)
+```bash
+# Using official Python Docker image
+docker run -it python:3.13-slim python3 -c "import sys; print(sys._is_gil_enabled())"
+
+# Conda (check for free-threading builds)
+conda install python=3.13
+```
+
+**Option 4: pyenv** (Developers)
+```bash
+# Install pyenv if not already installed
+curl https://pyenv.run | bash
+
+# Install free-threaded Python 3.13
+pyenv install 3.13.0t  # 't' suffix for free-threaded build
+pyenv local 3.13.0t
+
+# Verify
+python --version
+python -c "import sys; print(f'GIL: {sys._is_gil_enabled()}')"
+```
+
+**Using Free-Threading with pwalk**:
+```bash
+# Install pwalk
 python3.13t -m pip install pwalk
 
 # Run your script
-python3.13t your_script.py  # 't' suffix = free-threading enabled
+python3.13t your_script.py
+
+# Verify it's working
+python3.13t -c "import sys; print(f'Free-threading: {not sys._is_gil_enabled()}')"
 ```
+
+> **Note**: As of 2025, free-threading is still **experimental**. Some packages may not be compatible yet. For production use today, stick with `report()` which is always multi-threaded!
 
 ## Technical Architecture
 
