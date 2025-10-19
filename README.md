@@ -50,8 +50,9 @@ pip install pwalk
 
 To install for free-threading Python or PyPy:
 ```bash
-python3.13t -m pip install pwalk  # Free-threading CPython
-pypy3 -m pip install pwalk        # PyPy (JIT-compiled)
+python3.13t -m pip install pwalk          # Free-threading CPython
+PYTHON_GIL=0 python3.13t your_script.py   # Run with GIL disabled
+pypy3 -m pip install pwalk                # PyPy (JIT-compiled)
 ```
 
 ## Quick Start
@@ -358,12 +359,20 @@ python -c "import sys; print(f'GIL: {sys._is_gil_enabled()}')"
 # Install pwalk
 python3.13t -m pip install pwalk
 
+# IMPORTANT: Set PYTHON_GIL=0 to keep GIL disabled
+export PYTHON_GIL=0
+
 # Run your script
 python3.13t your_script.py
 
+# Or inline:
+PYTHON_GIL=0 python3.13t your_script.py
+
 # Verify it's working
-python3.13t -c "import sys; print(f'Free-threading: {not sys._is_gil_enabled()}')"
+PYTHON_GIL=0 python3.13t -c "import sys; print(f'Free-threading: {not sys._is_gil_enabled()}')"
 ```
+
+> **Important**: By default, Python 3.13t will **enable the GIL** when loading C extensions that haven't declared GIL-free compatibility. Use `PYTHON_GIL=0` or `-Xgil=0` to keep it disabled.
 
 > **Note**: As of 2025, free-threading is still **experimental**. Some packages may not be compatible yet. For production use today, stick with `report()` which is always multi-threaded!
 

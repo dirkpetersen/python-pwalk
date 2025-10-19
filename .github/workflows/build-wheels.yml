@@ -37,7 +37,7 @@ jobs:
         CIBW_BEFORE_ALL_LINUX: yum install -y zstd-devel || apt-get install -y libzstd-dev || true
         CIBW_BEFORE_BUILD: pip install setuptools wheel
         CIBW_TEST_REQUIRES: pytest
-        CIBW_TEST_COMMAND: "pytest {project}/tests/unit"
+        CIBW_TEST_COMMAND: "PYTHON_GIL=0 pytest {project}/tests/unit"
         # Enable free-threading build
         CIBW_FREE_THREADED_SUPPORT: "True"
 
