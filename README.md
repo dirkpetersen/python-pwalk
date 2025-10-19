@@ -43,7 +43,7 @@ pip install pwalk
 **That's it!** Pre-compiled binary wheels with zstd compression are available for:
 - **Linux**: x86_64 (manylinux2014)
 - **CPython**: 3.10, 3.11, 3.12, 3.13, 3.14
-- **PyPy**: 3.9, 3.10 (fast JIT-compiled Python alternative)
+- **PyPy**: 3.10, 3.11 (fast JIT-compiled Python alternative)
 - **Free-threading wheels**: Python 3.13t, 3.14t (experimental no-GIL builds)
 
 **No system dependencies needed** — wheels include everything pre-compiled!
