@@ -9,5 +9,5 @@ from .walk import walk
 from .report import report
 from .repair import repair
 
-__version__ = "0.1.3"
+__version__ = "0.1.4"
 __all__ = ["walk", "report", "repair"]
