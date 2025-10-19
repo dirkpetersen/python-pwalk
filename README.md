@@ -43,23 +43,20 @@ pip install pwalk
 **That's it!** Pre-compiled binary wheels are available for:
 - **Linux**: x86_64 (manylinux2014)
 - **CPython**: 3.10, 3.11, 3.12, 3.13, 3.14
+- **CPython (No GIL)**: 3.13t, 3.14t (experimental free-threading builds)
 - **PyPy**: 3.10, 3.11 (fast JIT-compiled Python alternative)
 
 **No system dependencies needed** — wheels include everything pre-compiled!
 
+For free-threading Python:
+```bash
+python3.13t -m pip install pwalk
+PYTHON_GIL=0 python3.13t your_script.py
+```
+
 For PyPy:
 ```bash
 pypy3 -m pip install pwalk
-```
-
-For free-threading Python (build from source):
-```bash
-# Free-threading wheels not yet available on PyPI
-# Build from source instead:
-git clone https://github.com/dirkpetersen/python-pwalk.git
-cd python-pwalk
-CC=gcc python3.13t -m pip install -e .
-PYTHON_GIL=0 python3.13t your_script.py
 ```
 
 ## Quick Start
