@@ -40,19 +40,26 @@ Traditional filesystem traversal tools struggle with modern storage systems cont
 pip install pwalk
 ```
 
-**That's it!** Pre-compiled binary wheels with zstd compression are available for:
+**That's it!** Pre-compiled binary wheels are available for:
 - **Linux**: x86_64 (manylinux2014)
 - **CPython**: 3.10, 3.11, 3.12, 3.13, 3.14
 - **PyPy**: 3.10, 3.11 (fast JIT-compiled Python alternative)
-- **Free-threading wheels**: Python 3.13t, 3.14t (experimental no-GIL builds)
 
 **No system dependencies needed** — wheels include everything pre-compiled!
 
-To install for free-threading Python or PyPy:
+For PyPy:
 ```bash
-python3.13t -m pip install pwalk          # Free-threading CPython
-PYTHON_GIL=0 python3.13t your_script.py   # Run with GIL disabled
-pypy3 -m pip install pwalk                # PyPy (JIT-compiled)
+pypy3 -m pip install pwalk
+```
+
+For free-threading Python (build from source):
+```bash
+# Free-threading wheels not yet available on PyPI
+# Build from source instead:
+git clone https://github.com/dirkpetersen/python-pwalk.git
+cd python-pwalk
+CC=gcc python3.13t -m pip install -e .
+PYTHON_GIL=0 python3.13t your_script.py
 ```
 
 ## Quick Start

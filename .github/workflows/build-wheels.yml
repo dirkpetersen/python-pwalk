@@ -22,30 +22,14 @@ jobs:
         CIBW_BUILD: cp310-* cp311-* cp312-* cp313-* cp314-*
         CIBW_SKIP: "*-musllinux_* *-win32"
         CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
-        # Install zstd in build container for compression support
+        # Fix CentOS mirrors and install zstd (optional)
         CIBW_BEFORE_ALL_LINUX: >
           sed -i 's|mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-* 2>/dev/null || true &&
           sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* 2>/dev/null || true &&
-          yum install -y zstd-devel || apt-get install -y libzstd-dev || true
+          (yum install -y libzstd-devel || echo "zstd not available, building without compression")
         CIBW_BEFORE_BUILD: pip install setuptools wheel
         CIBW_TEST_REQUIRES: pytest
         CIBW_TEST_COMMAND: "pytest {project}/tests/unit"
-
-    - name: Build free-threading wheels (Python 3.13+)
-      uses: pypa/cibuildwheel@v2.16.2
-      env:
-        CIBW_BUILD: cp313t-* cp314t-*
-        CIBW_SKIP: "*-musllinux_* *-win32"
-        CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
-        CIBW_BEFORE_ALL_LINUX: >
-          sed -i 's|mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-* 2>/dev/null || true &&
-          sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* 2>/dev/null || true &&
-          yum install -y zstd-devel || apt-get install -y libzstd-dev || true
-        CIBW_BEFORE_BUILD: pip install setuptools wheel
-        CIBW_TEST_REQUIRES: pytest
-        CIBW_TEST_COMMAND: "PYTHON_GIL=0 pytest {project}/tests/unit"
-        # Enable free-threading build
-        CIBW_FREE_THREADED_SUPPORT: "True"
 
     - name: Build PyPy wheels
       uses: pypa/cibuildwheel@v2.16.2
@@ -56,7 +40,7 @@ jobs:
         CIBW_BEFORE_ALL_LINUX: >
           sed -i 's|mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-* 2>/dev/null || true &&
           sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* 2>/dev/null || true &&
-          yum install -y zstd-devel || apt-get install -y libzstd-dev || true
+          (yum install -y libzstd-devel || echo "zstd not available, building without compression")
         CIBW_BEFORE_BUILD: pip install setuptools wheel
         CIBW_TEST_REQUIRES: pytest
         CIBW_TEST_COMMAND: "pytest {project}/tests/unit"
