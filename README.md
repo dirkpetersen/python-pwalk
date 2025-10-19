@@ -53,11 +53,11 @@ pip install pwalk
 ```python
 from pwalk import walk, report
 
-# 1. Drop-in replacement for os.walk() — but 5-10x faster!
+# 1. Drop-in replacement for os.walk() — 100% compatible API
 for dirpath, dirnames, filenames in walk('/data'):
     print(f"{dirpath}: {len(filenames)} files")
 
-# 2. Generate compressed filesystem report
+# 2. Generate compressed filesystem report (5-10x faster with multi-threading!)
 output, errors = report('/data', compress='zstd')
 # Creates scan.csv.zst - 23x smaller than plain CSV!
 
@@ -67,12 +67,14 @@ df = duckdb.connect().execute(f"SELECT * FROM '{output}'").fetchdf()
 print(df.head())
 ```
 
+> **Note on Performance**: The `walk()` function uses `os.walk()` under the hood (single-threaded) for maximum compatibility across Python versions. For **5-10x faster performance**, use `report()` which leverages our multi-threaded C implementation. In Python 3.13+ with free-threading (no-GIL mode), `walk()` will automatically use parallel traversal for massive speedups!
+
 ### Basic Usage
 
 ```python
 from pwalk import walk
 
-# Identical to os.walk() but parallel and much faster
+# 100% compatible with os.walk() API
 for dirpath, dirnames, filenames in walk('/data'):
     print(f"Directory: {dirpath}")
     print(f"  Subdirectories: {len(dirnames)}")
@@ -245,36 +247,39 @@ schedule.every().sunday.at("02:00").do(weekly_snapshot)
 
 ## Performance
 
-Based on John Dey's pwalk C implementation with additional optimizations:
+### Current Performance (Python 3.10-3.14)
 
+**`walk()` function**: Uses `os.walk()` internally (single-threaded) for 100% compatibility
+- Same speed as `os.walk()` — perfect drop-in replacement
+- No threading overhead, works everywhere
+
+**`report()` function**: Multi-threaded C implementation (5-10x faster!)
 - **Speed**: 8,000-30,000 stat operations per second
-- **Speedup**: 5-10x faster than os.walk()
 - **Example**: 50 million files in ~41 minutes at 20K stats/sec
+- **Parallelism**: Up to 32 threads
 - **Scaling**: Performance depends on storage system, host CPU, and file layout
-- **Compression**: Zstd reduces CSV size by 8-10x with minimal overhead
+- **Compression**: Zstd reduces CSV size by 23x with minimal overhead
 
-### Benchmark vs os.walk()
+### Future Performance (Python 3.13+ Free-Threading)
 
-```python
-import time
-from pwalk import walk
-import os
+**What's Changing?** Python 3.13 introduced optional "free-threading" mode (also called "no-GIL mode").
 
-# Test directory with 10M files
-path = '/large_dataset'
+**The Global Interpreter Lock (GIL) Explained**: For decades, Python had a "global lock" that prevented multiple threads from running Python code simultaneously. This meant that even with multiple CPU cores, only one thread could execute Python code at a time. Python 3.13+ can optionally remove this lock, allowing true parallel execution.
 
-# Standard os.walk()
-start = time.time()
-count = sum(len(files) for _, _, files in os.walk(path))
-print(f"os.walk(): {count} files in {time.time()-start:.1f}s")
+**What This Means for pwalk**:
+- Python 3.13+ with free-threading enabled: `walk()` will automatically use parallel traversal for 5-10x speedup
+- Python 3.13+ without free-threading: Same behavior as today (uses `os.walk()`)
+- Python 3.10-3.12: Same behavior as today (uses `os.walk()`)
+- `report()` is always fast: Already uses multi-threaded C code (not affected by GIL)
 
-# Parallel pwalk
-start = time.time()
-count = sum(len(files) for _, _, files in walk(path))
-print(f"pwalk:     {count} files in {time.time()-start:.1f}s")
+**How to Enable Free-Threading** (Python 3.13+):
+```bash
+# Install Python with free-threading support
+python3.13t -m pip install pwalk
+
+# Run your script
+python3.13t your_script.py  # 't' suffix = free-threading enabled
 ```
-
-Expected speedup: 10-100x depending on filesystem characteristics.
 
 ## Technical Architecture
 
