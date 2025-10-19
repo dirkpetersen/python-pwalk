@@ -264,9 +264,10 @@ schedule.every().sunday.at("02:00").do(weekly_snapshot)
 **`report()` function**: Multi-threaded C implementation (5-10x faster!)
 - **Speed**: 8,000-30,000 stat operations per second
 - **Example**: 50 million files in ~41 minutes at 20K stats/sec
-- **Parallelism**: Up to 32 threads
+- **Parallelism**: Up to 32 threads (releases GIL, works on all Python implementations)
 - **Scaling**: Performance depends on storage system, host CPU, and file layout
 - **Compression**: Zstd reduces CSV size by 23x with minimal overhead
+- **PyPy Compatible**: Multi-threading works on PyPy through C extension (cpyext)
 
 ### Future Performance (Python 3.13+ Free-Threading)
 
@@ -275,10 +276,10 @@ schedule.every().sunday.at("02:00").do(weekly_snapshot)
 **The Global Interpreter Lock (GIL) Explained**: For decades, Python had a "global lock" that prevented multiple threads from running Python code simultaneously. This meant that even with multiple CPU cores, only one thread could execute Python code at a time. Python 3.13+ can optionally remove this lock, allowing true parallel execution.
 
 **What This Means for pwalk**:
-- Python 3.13+ with free-threading enabled: `walk()` will automatically use parallel traversal for 5-10x speedup
-- Python 3.13+ without free-threading: Same behavior as today (uses `os.walk()`)
-- Python 3.10-3.12: Same behavior as today (uses `os.walk()`)
-- `report()` is always fast: Already uses multi-threaded C code (not affected by GIL)
+- **CPython 3.13+ with free-threading**: `walk()` will automatically use parallel traversal for 5-10x speedup
+- **CPython 3.10-3.12**: `walk()` uses `os.walk()` (single-threaded)
+- **PyPy (all versions)**: `walk()` uses `os.walk()` (single-threaded, but JIT-compiled Python is faster)
+- **`report()` is always fast**: Multi-threaded C code releases GIL - works on all implementations!
 
 **How to Get Free-Threading Python** (Python 3.13+):
 
