@@ -255,6 +255,24 @@ schedule.every().sunday.at("02:00").do(weekly_snapshot)
 
 ## Performance
 
+### Multi-Threading Support Matrix
+
+| Python Version | `walk()` | `report()` | Notes |
+|----------------|----------|------------|-------|
+| **CPython 3.10** | ❌ | ✅ | `walk()` uses single-threaded `os.walk()` |
+| **CPython 3.11** | ❌ | ✅ | `walk()` uses single-threaded `os.walk()` |
+| **CPython 3.12** | ❌ | ✅ | `walk()` uses single-threaded `os.walk()` |
+| **CPython 3.13** | ❌ | ✅ | `walk()` uses single-threaded `os.walk()` |
+| **CPython 3.13t** (free-threading) | ✅ | ✅ | **Both multi-threaded** with no-GIL mode |
+| **CPython 3.14** | ❌ | ✅ | `walk()` uses single-threaded `os.walk()` |
+| **CPython 3.14t** (free-threading) | ✅ | ✅ | **Both multi-threaded** with no-GIL mode |
+| **PyPy 3.10** | ❌ | ✅ | `walk()` single-threaded but JIT-compiled |
+| **PyPy 3.11** | ❌ | ✅ | `walk()` single-threaded but JIT-compiled |
+
+**Legend**: ✅ = Multi-threaded (5-10x faster) | ❌ = Single-threaded
+
+**Key Takeaway**: Use `report()` for maximum performance on all Python versions!
+
 ### Current Performance (Python 3.10-3.14)
 
 **`walk()` function**: Uses `os.walk()` internally (single-threaded) for 100% compatibility
